@@ -1,0 +1,112 @@
+# Food Delivery API
+
+
+
+## API Reference
+
+### Getting Started
+- Base URL: The API as at now can only be run locally and is hosted at the default, `http://127.0.0.1:5000/`
+- Authentication: The API does require authentication for some endpoints out of its 3 endpoints, including `POST /order` and `POST /complete-order`. 
+
+### Error Handling
+-Errors are returned as JSON objects in the following format
+
+-The API will return four error types when requests fail:
+- `500`: Internal Server Error
+```
+{
+    "success":False,"message":"Internal Server Error", 
+    "error": 500
+}
+```
+- `400`: Bad Request
+```
+{
+    "success":False,"message":"Bad Request", 
+    "error": 400
+}
+```
+- `404`: Resource Not Found
+```
+{
+    "success":False,"message":"Resourse Not Found", 
+    "error": 404
+}
+```
+- `401`: User not authorized 
+```
+{
+    "success":False,"message":"User not authorized", 
+    "error": 401
+}
+```
+
+### Endpoints
+
+#### GET /login
+- General:
+    - This endpoint requires user credentials and verifies it.
+    - After verification, user can now access `POST /order` and `PUT /complete-order`
+- `curl -u john:password123 http://localhost:5000/login`
+```
+{
+  "success": true,
+  "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjoiam9obiIsImV4cCI6MTY4NzM3NDk2MH0.-THDxGuPHdDBe_igde7Im9iY2NY2tG0QmhXe1xjgASo"
+}
+```
+
+
+#### GET /menus
+- General:
+    - Returns a list of book objects, success value, and total number menus available. 
+- Sample: `curl http://127.0.0.1:5000/menus`
+
+``` 
+  {
+  "menus": [
+    {
+      "id": 1,
+      "items": [
+        "fufuo",
+        "banku",
+        "rice ball"
+      ],
+      "resturant_id": 1
+    }
+  ],
+  "success": true
+}
+```
+
+
+#### POST /order
+- General:
+    - This endpoint places a new order.
+    - It requires a JSON object containing the `user_id`, `resturant_id`,`menu_id`, and `items` which represents the food(s) selected by the user.  
+    - On success, the endpoint returns an object containing the details of the order 
+- `curl -X POST -H "Content-Type: application/json" -d "{\"user_id\": 1, \"resturant_id\": 1, \"menu_id\": 1, \"items\": [\"fufuo\"]}" "http://127.0.0.1:5000/order"`
+```
+{
+  "order": {
+    "id": 2,
+    "items": [
+      "fufuo"
+    ],
+    "resturant_id": 1,
+    "user_id": 1
+  },
+  "success": true
+}
+
+
+```
+#### PATCH /complete-order
+- General:
+    - Supplying the order id in a JSON object, this enpoint will set the `completed` column of the object to `True`. 
+- `curl -X PATCH -H "Content-Type: application/json" -d "{\"id\":2}" "http://localhost:5000/complete-order"`
+```
+{
+  "message": "Order number 2 has been fulfilled",
+  "success": true
+}
+```

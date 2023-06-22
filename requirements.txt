@@ -1,0 +1,4 @@
+flask
+jwt
+flask_cors
+flask_sqlalchemy
