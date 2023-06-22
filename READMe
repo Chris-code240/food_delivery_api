@@ -1,17 +1,25 @@
 # Food Delivery API
 
-
+## Introduction
+- Welcome to my food delivery RESTful API. The API is being built to serve web and standalone applications to allow users
+  browse `menus`, `place order`, and `complete order`.
+- The API is being built with `Flask` framework along with:
+    . `JWT` [jwt]
+    . `CORS` [flask_cors]
+    . `SQLAlchemy ORM` [flask_sqlachemy]
 
 ## API Reference
 
 ### Getting Started
 - Base URL: The API as at now can only be run locally and is hosted at the default, `http://127.0.0.1:5000/`
-- Authentication: The API does require authentication for some endpoints out of its 3 endpoints, including `POST /order` and `POST /complete-order`. 
+- Authentication: The API does require authentication for some endpoints out of its 3 endpoints, including `POST /order` and `POST /complete-order`.
+- Whiles in the root directory, run `pip install -r requirements.txt` to install all required dependencies
+- Then, run `python app.py` to start the server/API 
 
 ### Error Handling
 -Errors are returned as JSON objects in the following format
 
--The API will return four error types when requests fail:
+-The API will return five error types when requests fail:
 - `500`: Internal Server Error
 ```
 {
@@ -31,6 +39,13 @@
 {
     "success":False,"message":"Resourse Not Found", 
     "error": 404
+}
+```
+- `405`: Resource Not Found
+```
+{
+    "success":False,"message":" `[METHOD]` is not allowed", 
+    "error": 405
 }
 ```
 - `401`: User not authorized 
