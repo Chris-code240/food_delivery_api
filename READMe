@@ -61,10 +61,11 @@
 ```
 
 ### Endpoints
+`NOTE` All enpoints, except `/login`, `/menus`,`/menus/id`, `/resturants`,`/resturants/id`, require verification.
 
 #### GET /login
 - General:
-    - This endpoint requires user credentials and verifies it.
+    - This endpoint requires user credentials and verify.
     - After verification, user can now access `POST /order` and `PUT /complete-order`
 - `curl -u john:password123 http://localhost:5000/login`
 ```
@@ -129,3 +130,137 @@
   "success": true
 }
 ```
+
+#### POST /cancel-order
+- General:
+    - Supplying the order id in a JSON object, this enpoint will set the `completed` column of the object to `True`. 
+- `curl -X PATCH -H "Content-Type: application/json" -d "{\"id\":1}" "http://localhost:5000/cancel-order"`
+```
+{
+  "message": "Order cancelled",
+  "success": true
+}
+```
+
+#### GET /history
+- General:
+    - This endpoint returns all previouse orders whether cancelled or completed.
+    `curl "http://localhost:5000/history`
+
+```
+{
+  "history": [
+    {
+      "id": 1,
+      "in_preparation": true,
+      "items": [
+        "fufuo",
+        "rice ball"
+      ],
+      "cancelled": false,
+      "completed": true,
+      "order_received": true,
+      "out_for_delivery": true,
+      "resturant_id": 1,
+      "user_id": 1
+    }
+  ],
+  "total": 1
+}
+```
+
+
+
+
+
+### ADMIN
+   `NOTE:` All admin enpoints required a login by first verifying at the `/admin` endpoint
+
+# POST /order-received
+- General:
+    - The endpoint confirms that a user's order has been received and ready to be prepared,by an admin.
+    -The endpoint requires the id of the only order
+    -`curl -X POST -H "Content-Type: application/json" -d "{\"id\":1}" "http://localhost:5000/order-received"`
+```
+{
+  "message": "Order confirmed",
+  "success": true
+}
+```
+
+## POST /put-in-preparation
+- General:
+    - Obviously, the endpoint puts an order into the preparation phase.
+    - The endpoint requires only the id of the order
+    - `curl -X POST -H "Content-Type: application/json" -d "{\"id\":1}" "http://localhost:5000/put-in-preparation"`
+```
+{
+  "message": "Order confirmed",
+  "success": true
+}
+```
+
+### POST /in-transit
+- General:
+    - This endpoint puts the order into the delivery phase until the user confirms oder-received.
+    - The endpoint requires only the id of the order
+    - `curl -X POST -H "Content-Type: application/json" -d "{\"id\":1}" "http://localhost:5000/in-transit"`
+```
+{
+  "message": "Order 1 is in transit for delivery",
+  "success": true
+}
+```
+
+#### GET /out-for-delivery
+- General:
+    - Admin can get all orders in deliver with this enpoint
+    - No parameter required
+    -  `curl "http://localhost:5000/out-for-delivery"`
+```
+{
+  "orders_in_delivery": [
+    {
+      "id": 1,
+      "in_preparation": true,
+      "items": [
+        "fufuo",
+        "rice ball"
+      ],
+      "order_received": true,
+      "out_for_delivery": true,
+      "resturant_id": 1,
+      "user_id": 1
+    }
+  ],
+  "total": 1
+}
+```
+
+#### GET /in-preparation
+- General:
+    - This enpoint returns all orders in preparation phase.
+    - No parameter required
+    - `curl "http://localhost:5000/in-preparation"`
+```
+{
+  "orders_in_delivery": [
+    {
+      "id": 1,
+      "in_preparation": true,
+      "items": [
+        "fufuo",
+        "rice ball"
+      ],
+      "order_received": true,
+      "out_for_delivery": false,
+      "resturant_id": 1,
+      "user_id": 1
+    }
+  ],
+  "total": 1
+}
+```
+
+
+

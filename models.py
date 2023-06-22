@@ -27,8 +27,9 @@ def startDb():
 
     order = Order(1,1,1,['fufuo','rice ball'])
     order.addOrder()
-    # for item in ['rice ball','fufuo']:
-    #     order.addItem(item)
+
+    admin = Admin('ADMIN0101','ADMIN_password')
+    admin.addAdmin()
 
 
 class Resturant(db.Model):
@@ -104,7 +105,11 @@ class Order(db.Model):
     resturant_id = db.Column(db.Integer(),db.ForeignKey('Resturant.id'))
     menu_id = db.Column(db.Integer,db.ForeignKey('Order.id'))
     items = db.Column(db.String(),nullable=False,default="[]")
-    completed = db.Column(db.Boolean,default=False)  
+    order_received = db.Column(db.Boolean,default=False)
+    in_preparation = db.Column(db.Boolean,default=False)
+    out_for_delivery = db.Column(db.Boolean,default=False)
+    completed = db.Column(db.Boolean,default=False)
+    cancel =  db.Column(db.Boolean,default=False) 
 
     def __init__(self,user_id,resturant_id,menu_id,items) -> None:
         self.user_id = user_id
@@ -120,6 +125,21 @@ class Order(db.Model):
         self.completed = True
         db.session.commit()
     
+    def confirmOrder(self):
+        self.confirmOrder = True
+        db.session.commit()
+    
+    def outForDeliver(self):
+        self.out_for_delivery = True
+        db.session.commit()
+    
+    def put_in_Preparation(self):
+        self.in_preparation = True
+        db.session.commit()
+    def cancelOrder(self):
+        self.cancel = True
+        db.session.commit()
+    
     def addItem(self,item):
         items = json.loads(self.items)
         items.append(item)
@@ -127,8 +147,21 @@ class Order(db.Model):
         db.session.commit()
 
     def getOrder(self):
-        return {"id":self.id,"resturant_id":self.resturant_id,"user_id":self.user_id,"items":json.loads(self.items)}
+        return {"id":self.id,"resturant_id":self.resturant_id,"user_id":self.user_id,"order_received":self.order_received,"in_preparation":self.in_preparation,"out_for_delivery":self.out_for_delivery,"cancelled": self.cancel,
+      "completed": self.completed,"items":json.loads(self.items)}
 
+class Admin(db.Model):
+    id = db.Column(db.Integer(),primary_key=True)
+    admin_id = db.Column(db.String(),nullable=False,unique=True)
+    password = db.Column(db.String(),nullable=False)
+
+    def __init__(self,id,password):
+        self.admin_id = id
+        self.password = password
+    
+    def addAdmin(self):
+        db.session.add(self)
+        db.session.commit()
 
 class AuthError(Exception):
     def __init__(self, error, status_code):
