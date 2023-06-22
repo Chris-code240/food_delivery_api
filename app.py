@@ -58,6 +58,25 @@ def token_required(f):
         token = parts[1]
         return token
 
+@app.route('/resturants')
+def get_returants():
+    try:
+        resturants = [r.getResturant() for r in Resturant.query.all()]
+        return jsonify({"success":True,"resturants":resturants})
+    except:
+        abort(500)
+
+@app.route('/resturants/<int:id>')
+def get_resturant(id):
+    try:
+        menu = Resturant.query.filter(Resturant.id == id).one_or_none()
+        if menu is not None:
+            return jsonify({"success":True,"menu":menu.getResturant()})
+        abort(404)
+    except:
+        abort(500)
+
+
 @app.route('/menus')
 def get_all_menus():
     try:
@@ -66,6 +85,15 @@ def get_all_menus():
         abort(500)
     return jsonify({"success":True,"menus":menus})
 
+@app.route('/menus/<int:id>')
+def get_menu(id):
+    try:
+        menu = Menu.query.filter(Menu.id == id).one_or_none()
+        if menu is not None:
+            return jsonify({"success":True,"menu":menu.getMenu()})
+        abort(404)
+    except:
+        abort(500)
 
 
 
