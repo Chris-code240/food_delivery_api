@@ -14,7 +14,11 @@
 - Base URL: The API as at now can only be run locally and is hosted at the default, `http://127.0.0.1:5000/`
 - Authentication: The API does require authentication for some endpoints out of its 3 endpoints, including `POST /order` and `POST /complete-order`.
 - Whiles in the root directory, run `pip install -r requirements.txt` to install all required dependencies
+- In `app.py` there's a @TODO, do as it says.
+- Automatically, a new user, resturant,menu and order will be created for testing (all with id of 1)
+- In `config.py`, in the `SQLALCHEMY_DATABASE_URI`, supply the needed deatils (username,password and database name)
 - Then, run `python app.py` to start the server/API 
+
 
 ### Error Handling
 -Errors are returned as JSON objects in the following format

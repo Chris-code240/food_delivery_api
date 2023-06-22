@@ -4,6 +4,10 @@ import datetime
 import os
 from models import app,Resturant,Menu,Order,User,startDb,AuthError
 from functools import wraps
+
+"""
+@TODO Run Once.
+"""
 # startDb()
 
 def token_required(f):
