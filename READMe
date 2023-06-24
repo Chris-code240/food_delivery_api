@@ -17,7 +17,19 @@
 - In `app.py` there's a @TODO, do as it says.
 - Automatically, a new user, resturant,menu and order will be created for testing (all with id of 1)
 - In `config.py`, in the `SQLALCHEMY_DATABASE_URI`, supply the needed deatils (username,password and database name)
-- Then, run `python app.py` to start the server/API 
+- Then, run `python app.py` to start the server/API
+
+- ## Tables for testing
+- `Admin`
+  - id: 1
+  - admin_id: ADMIN0101
+  - password: ADMIN_password
+
+- `User`
+  - id: 1,
+  - name: Chris,
+  - password: mypassword
+
 
 
 ### Error Handling

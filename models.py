@@ -151,6 +151,7 @@ class Order(db.Model):
       "completed": self.completed,"items":json.loads(self.items)}
 
 class Admin(db.Model):
+    __tablename__ = "Admin"
     id = db.Column(db.Integer(),primary_key=True)
     admin_id = db.Column(db.String(),nullable=False,unique=True)
     password = db.Column(db.String(),nullable=False)
